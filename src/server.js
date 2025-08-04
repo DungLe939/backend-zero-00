@@ -1,23 +1,39 @@
-const express = require('express') //import
+const morgan = require('morgan')
+const mysql = require('mysql2')
 const path = require('path')
-require('dotenv').config();
+const express = require('express');
+const configViewEngine = require('./config/viewEngine')
+const webRouter = require('./routes/web')
+require('dotenv').config()
 
-const app = express(); //app express
-const port = process.env.PORT || 8888; //port
-const hostname = process.env.HOST_NAME;
+const app = express();
+const port = process.env.PORT || 8888;
 
+//Debug morgan
+// app.use(morgan('combined'));
 //config template engine
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
-//config static file
-app.use('/', express.static(path.join(__dirname, 'public')))
-
-//route
-app.get('/', (req, res) => {
-    res.render('sample.ejs')
-})
-
+configViewEngine(app);
+//run app
+app.use(webRouter);
+//Test connection
+const connection = mysql.createConnection({
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD
+});
+//Test query
+connection.query(
+    'SELECT * FROM Users u;',
+    function(err, results, fields) {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        console.log('Results >>>', results); // results contains rows returned by server
+    }
+);
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
