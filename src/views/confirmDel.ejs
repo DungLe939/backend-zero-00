@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm Delete</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f8f8;
+            display: flex;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+        .confirm-box {
+            background: #fff;
+            padding: 2em 3em;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .confirm-box h2 {
+            margin-bottom: 1em;
+        }
+        .buttons {
+            margin-top: 1.5em;
+        }
+        .buttons button, .buttons a {
+            padding: 0.5em 1.5em;
+            margin: 0 0.5em;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .delete-btn {
+            background: #e74c3c;
+            color: #fff;
+        }
+        .cancel-btn {
+            background: #bdc3c7;
+            color: #333;
+        }
+        .notShow{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="confirm-box">
+        <h2>Are you sure you want to delete this data?</h2>
+        <p>User: <strong><%= user.name %></strong> (<%= user.email %>)</p>
+        <form method="POST" action="/delete-user">
+            <!-- Hidden input để truyền ID của user cần xóa -->
+            <input type="hidden" name="id" value="<%= user.id %>">
+            <div class="buttons">
+                <button type="submit" class="delete-btn">Yes, Delete</button>
+                <a href="/" class="cancel-btn">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

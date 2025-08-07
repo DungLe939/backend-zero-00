@@ -19,6 +19,15 @@ configViewEngine(app);
 //run app
 app.use(webRouter);
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+(async()=> {
+    try {
+        //Test connection
+        connection();
+        app.listen(port, () => {
+            console.log(`Example app listening on port ${port}`)
+        })
+    } catch (error) {
+        console.log("ERROR >>>>> Fail to connect: ")
+    }
+})();
+
